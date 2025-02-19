@@ -1,0 +1,52 @@
+{
+    "functions": [
+        {
+            "name": "dojo_swap_agent_token_in",
+            "description": "Swap the agent token for a native token",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "token-contract": {
+                        "type": "string",
+                        "description": "Contract address of the token to swap"
+                    },
+                    "pair-contract": {
+                        "type": "string",
+                        "description": "Contract address of the token pair"
+                    },
+                    "amount": {
+                        "type": "integer",
+                        "description": "Amount of the token to swap"
+                    },
+                    "decimals": {
+                        "type": "integer",
+                        "description": "Number of decimal places for the token"
+                    }
+                },
+                "required": ["subdenom", "name", "symbol", "decimals"]
+            }
+        },
+        {
+            "name": "dojo_swap_native_token_in",
+            "description": "Swap a native token for an agent token",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "pair-contract": {
+                        "type": "string",
+                        "description": "Contract address of the token pair"
+                    },
+                    "denom": {
+                        "type": "string",
+                        "description": "Denomination of the native token to swap"
+                    },
+                    "amount": {
+                        "type": "integer",
+                        "description": "Amount of the native token to swap"
+                    }
+                },
+                "required": ["subdenom", "name", "symbol", "decimals"]
+            }
+        },
+    ]
+}
