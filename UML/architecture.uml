@@ -1,0 +1,31 @@
+flowchart TD;
+    
+    %% Trading System (Injective)
+    subgraph Trading Arena
+        AgentFramework["Injective Agent Framework (Python)"]
+        INJPumpfun["INJ-Pumpfun"]
+        Strategies["Trading Strategies"]
+        AgentFramework -->|Executes Trades| INJPumpfun
+        AgentFramework -->|Implements| Strategies
+    end
+
+    %% Social Media Communication (ElizaOS)
+    subgraph Social Media Interaction
+        ElizaOS["ElizaOS Framework (Node.js)"]
+        Twitter["Twitter Bot"]
+        Telegram["Telegram Bot"]
+        Discord["Discord Bot"]
+        ElizaOS -->|Shares Trading Strategies| Twitter
+        ElizaOS -->|Shares Trading Strategies| Telegram
+        ElizaOS -->|Shares Trading Strategies| Discord
+    end
+
+    %% User Interaction
+    subgraph User Interaction
+        Users["Traders & Community"]
+        Users -->|Interacts with AI Agents| ElizaOS
+    end
+
+    %% Connection Between Trading System & Communication System
+    AgentFramework -->|Sends Strategy Updates| ElizaOS
+    ElizaOS -->|Receives Market Feedback| AgentFramework
