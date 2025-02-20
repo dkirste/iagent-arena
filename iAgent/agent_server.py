@@ -89,7 +89,7 @@ class InjectiveChatAgent:
         session_id="default",
         private_key=None,
         agent_id=None,
-        environment="mainnet",
+        environment="testnet",
     ):
         """Get response from OpenAI API."""
         await self.initialize_agent(
@@ -183,7 +183,7 @@ class InjectiveChatAgent:
                 # Get final response
                 second_response = await asyncio.to_thread(
                     self.client.chat.completions.create,
-                    model="gpt-4-turbo-preview",
+                    model="gpt-4o-mini",
                     messages=self.conversations[session_id],
                     max_tokens=2000,
                     temperature=0.7,
@@ -315,7 +315,7 @@ async def clear_endpoint():
 
 def main():
     parser = argparse.ArgumentParser(description="Run the chatbot API server")
-    parser.add_argument("--port", type=int, default=5000, help="Port for API server")
+    parser.add_argument("--port", type=int, default=5001, help="Port for API server")
     parser.add_argument("--host", default="0.0.0.0", help="Host for API server")
     parser.add_argument("--debug", action="store_true", help="Run in debug mode")
     args = parser.parse_args()

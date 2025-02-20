@@ -382,7 +382,7 @@ class InjectiveCLI:
 
 def main():
     parser = argparse.ArgumentParser(description="Injective Chain CLI Client")
-    parser.add_argument("--url", default="http://localhost:5000", help="API URL")
+    parser.add_argument("--url", default="http://localhost:5001", help="API URL")
     parser.add_argument("--debug", action="store_true", help="Enable debug mode")
     args = parser.parse_args()
 
