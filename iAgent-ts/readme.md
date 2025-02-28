@@ -1,35 +1,56 @@
+
 # iAgent with Eliza Quick Start Guide
 
-## Overview
+### Overview
 
 The iAgent SDK is a comprehensive framework for building applications on the Injective Chain, offering:
 
-### Rich Module Support
+#### Rich Module Support
 - Full coverage of Injective modules (Exchange, Staking, Governance, Bank)
 - Pre-built actions for trading, staking, and governance
 
-### Action Framework
+#### Action Framework
 - Template-based system with built-in validation
 - Standardized patterns for queries and transactions
 - Automated error handling
 
-### Integration Features
+#### Integration Features
 - Native gRPC client integration
 - Multi-network support (Mainnet/Testnet)
 - Streamlined key management
 
-### Developer Tools
+#### Developer Tools
 - TypeScript definitions
 - Example implementations
 - Modular action creation system
 
 This SDK enables rapid development of secure, reliable applications within Injective's DeFi ecosystem.
 
-## Quick Start Guide
+### 🔥 What's New
+
+#### Enhanced Trading System Prompts
+We've added specialized system prompts for trading operations that provide:
+- Improved safety and risk management guidance
+- Standardized market terminology handling
+- Clear decision-making processes for financial operations
+- Comprehensive verification flows for critical transactions
+
+#### New Trading Utilities
+- `generateTradingText()` - Generate AI responses optimized for trading contexts
+- `enhanceTradingPrompt()` - Customize trading prompts with domain-specific instructions
+- Specialized trading actions with built-in safety checks
+
+#### Better Risk Management
+- Double verification for critical operations
+- Standardized market format handling
+- Detailed risk assessment in all trading operations
+- Clear execution plans with safety considerations
+
+### Quick Start Guide
 
 **Note:** Requires Node.js version 23 or higher
 
-### Initial Setup
+#### Initial Setup
 
 1. Clone the repository:
 ```bash
@@ -42,7 +63,7 @@ cd iagent-ts
 pnpm i --no-frozen-lockfile && pnpm build
 ```
 
-### Environment Configuration
+#### Environment Configuration
 
 1. Create your environment file:
 ```bash
@@ -62,7 +83,7 @@ OPENAI_API_KEY="sks-x"
 
 **Note:** Get your OpenAI API key from: https://platform.openai.com/api-keys
 
-### Running the Application
+#### Running the Application
 
 1. Start the agent server:
 ```bash
@@ -74,21 +95,110 @@ pnpm start
 pnpm start:client
 ```
 
-## Advanced Configuration
+## Trading System Prompt Integration Guide
 
-### Character Configuration
+This section explains how to integrate and use the enhanced trading system prompt functionality in your iAgent applications.
 
-#### Default Character
+### Overview
+
+The trading system prompt feature provides specialized guidance to AI models when handling financial and trading operations. It emphasizes:
+
+- Risk management and safety
+- Clear explanations of complex concepts
+- Standardized market handling
+- Proper verification of critical operations
+- Comprehensive error handling
+
+### Setup Instructions
+
+#### 1. Add the Required Files
+
+First, add the following files to your project:
+
+- `src/tradingSystemPrompt.ts` - Contains the core trading system prompt
+- `src/utils/tradingPromptUtils.ts` - Utilities for working with trading prompts
+- Optional: `src/actions/tradeAction.ts` - Example implementation
+
+#### 2. Update Your Generation Code
+
+Modify your existing `generateText` function in `src/generation.ts` to support the trading system prompt, as shown in the code examples.
+
+#### 3. Register Trading Actions
+
+To use trading-specific actions, register them in your agent runtime:
+
+```typescript
+import { tradeAction } from './actions/tradeAction';
+
+// Inside your setup code
+runtime.registerAction(tradeAction);
+```
+
+### Usage Examples
+
+#### Basic Usage
+
+To generate text with the trading system prompt:
+
+```typescript
+import { generateTradingText } from './utils/tradingPromptUtils';
+
+const response = await generateTradingText({
+  runtime,
+  context: "Analyze the current BTC market conditions and suggest entry points",
+  modelClass: ModelClass.LARGE
+});
+```
+
+#### Custom Trading Instructions
+
+You can enhance the base trading prompt with specific instructions:
+
+```typescript
+import { enhanceTradingPrompt } from './utils/tradingPromptUtils';
+import { tradingSystemPrompt } from './tradingSystemPrompt';
+
+const customPrompt = enhanceTradingPrompt(
+  tradingSystemPrompt,
+  `
+  SPECIFIC MARKET CONTEXT:
+  - Focus on Ethereum-based assets
+  - Consider gas fees in calculations
+  - Prioritize long-term positions over short-term trades
+  `
+);
+
+const response = await generateTradingText({
+  runtime,
+  context: userQuery,
+  customTradingPrompt: customPrompt
+});
+```
+
+#### Creating Trading-Focused Actions
+
+When creating trading-specific actions:
+
+1. Use the `generateTradingText` utility for all AI responses
+2. Implement thorough validation to ensure trading intent
+3. Include safety checks before executing trades
+4. Provide clear feedback to users about risks and outcomes
+
+### Advanced Configuration
+
+#### Character Configuration
+
+##### Default Character
 To modify the default character, edit `src/character.ts`
 
-#### Custom Characters
+##### Custom Characters
 Load custom character configurations:
 ```bash
 pnpm start --characters="path/to/your/character.json"
 ```
 **Note:** Multiple character files can be loaded simultaneously
 
-### Client Configuration
+#### Client Configuration
 
 You can configure clients in two ways:
 
@@ -105,24 +215,60 @@ plugins: [injectivePlugin]
 }
 ```
 
-## Development Best Practices
+## Best Practices
+
+### Safety First
+
+- Always validate user inputs thoroughly
+- Double-check addresses and transaction parameters
+- Use appropriate model sizes for complex financial analysis
+- Never execute trades without explicit user confirmation
+
+### Clear Communication
+
+- Explain risks and trade-offs clearly
+- Break down complex financial concepts
+- Provide step-by-step plans for critical operations
+- Offer alternatives when appropriate
+
+### Error Handling
+
+- Catch and log all errors
+- Provide helpful error messages to users
+- Never leave transactions in an ambiguous state
+- Include recovery suggestions when issues occur
+
+### Development Best Practices
 
 1. Always use TypeScript for type safety
 2. Follow the template patterns for new actions
 3. Implement proper error handling
 4. Test on testnet before deploying to mainnet
+5. Use trading-specific prompts for all financial operations
 
-## Common Issues and Solutions
+## Troubleshooting
 
-1. **Connection Issues**
-   - Verify network configuration
-   - Check API key validity
-   - Ensure proper endpoint URLs
+### Common Issues
 
-2. **Transaction Failures**
-   - Verify account balance
-   - Check gas settings
-   - Validate transaction parameters
+- **Model Responses Too Generic**: Try increasing the model size or adding more specific context in your prompt
+- **Safety Checks Too Restrictive**: Adjust validation logic to better match your use case
+- **Performance Issues**: Consider caching market data and using smaller models for initial analysis
+- **Connection Issues**: Verify network configuration and API key validity
+- **Transaction Failures**: Check account balance, gas settings, and transaction parameters
+- **Trading Response Quality**: Try increasing the model size or add more market context
+
+### Logging
+
+Always enable detailed logging for trading operations:
+
+```typescript
+elizaLogger.info("Trading operation details:", {
+  operation: "market_buy",
+  asset: "BTC/USDT",
+  amount: "0.1",
+  userID: userId
+});
+```
 
 ## Next Steps
 
@@ -130,6 +276,7 @@ plugins: [injectivePlugin]
 2. Review the API documentation
 3. Join the developer community
 4. Build your first application
+5. Check out the Trading System Prompt
 
 For more detailed information, refer to:
 - Official Documentation
