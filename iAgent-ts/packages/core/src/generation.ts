@@ -55,6 +55,8 @@ import { fal } from "@fal-ai/client";
 import BigNumber from "bignumber.js";
 import { createPublicClient, http } from "viem";
 
+import { tradingSystemPrompt } from "./tradingSystemPrompt";
+
 type Tool = CoreTool<any, any>;
 type StepResult = AIStepResult<any>;
 
@@ -347,6 +349,7 @@ export async function generateText({
     maxSteps = 1,
     stop,
     customSystemPrompt,
+    useTradingPrompt = false, // New parameter to enable trading-specific system prompt
     verifiableInference = process.env.VERIFIABLE_INFERENCE_ENABLED === "true",
     verifiableInferenceOptions,
 }: {
@@ -358,6 +361,7 @@ export async function generateText({
     maxSteps?: number;
     stop?: string[];
     customSystemPrompt?: string;
+    useTradingPrompt?: boolean; // New parameter
     verifiableInference?: boolean;
     verifiableInferenceAdapter?: IVerifiableInferenceAdapter;
     verifiableInferenceOptions?: VerifiableInferenceOptions;
@@ -373,6 +377,7 @@ export async function generateText({
         modelProvider: runtime.modelProvider,
         model: modelClass,
         verifiableInference,
+        useTradingPrompt,
     });
     elizaLogger.log("Using provider:", runtime.modelProvider);
     // If verifiable inference is requested and adapter is provided, use it
@@ -491,6 +496,16 @@ export async function generateText({
 
     elizaLogger.info("Selected model:", model);
 
+    let systemPrompt = customSystemPrompt;
+    if (!systemPrompt) {
+        if (useTradingPrompt) {
+            systemPrompt = tradingSystemPrompt;
+            elizaLogger.info("Using trading-specific system prompt");
+        } else {
+            systemPrompt = runtime.character.system ?? settings.SYSTEM_PROMPT ?? undefined;
+        }
+    }
+
     const modelConfiguration = runtime.character?.settings?.modelConfig;
     const temperature =
         modelConfiguration?.temperature || modelSettings.temperature;
@@ -552,10 +567,7 @@ export async function generateText({
                 const { text: openaiResponse } = await aiGenerateText({
                     model: openai.languageModel(model),
                     prompt: context,
-                    system:
-                        runtime.character.system ??
-                        settings.SYSTEM_PROMPT ??
-                        undefined,
+                    system: systemPrompt,
                     tools: tools,
                     onStepFinish: onStepFinish,
                     maxSteps: maxSteps,
