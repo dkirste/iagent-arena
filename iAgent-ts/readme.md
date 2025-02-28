@@ -187,57 +187,6 @@ When creating trading-specific actions:
 
 
 
-# Injective Hackathon
-Submission for Injective AI Agent Hackathon
-
-## iAgent with Eliza Quick Start Guide
-
-### Overview
-
-The iAgent SDK is a comprehensive framework for building applications on the Injective Chain, offering:
-
-#### Rich Module Support
-- Full coverage of Injective modules (Exchange, Staking, Governance, Bank)
-- Pre-built actions for trading, staking, and governance
-
-#### Action Framework
-- Template-based system with built-in validation
-- Standardized patterns for queries and transactions
-- Automated error handling
-
-#### Integration Features
-- Native gRPC client integration
-- Multi-network support (Mainnet/Testnet)
-- Streamlined key management
-
-#### Developer Tools
-- TypeScript definitions
-- Example implementations
-- Modular action creation system
-
-This SDK enables rapid development of secure, reliable applications within Injective's DeFi ecosystem.
-
-### 🔥 What's New
-
-#### Enhanced Trading System Prompts
-We've added specialized system prompts for trading operations that provide:
-- Improved safety and risk management guidance
-- Standardized market terminology handling
-- Clear decision-making processes for financial operations
-- Comprehensive verification flows for critical transactions
-
-#### New Trading Utilities
-- `generateTradingText()` - Generate AI responses optimized for trading contexts
-- `enhanceTradingPrompt()` - Customize trading prompts with domain-specific instructions
-- Specialized trading actions with built-in safety checks
-
-#### Better Risk Management
-- Double verification for critical operations
-- Standardized market format handling
-- Detailed risk assessment in all trading operations
-- Clear execution plans with safety considerations
-
-
 ### Testing the Advanced Trading System Prompts
 
 To test what we did with the advanced trading system prompts, you'll need to run the application and try out the advanced queries. Here's how to do that:
