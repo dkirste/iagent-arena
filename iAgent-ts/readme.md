@@ -184,6 +184,106 @@ When creating trading-specific actions:
 3. Include safety checks before executing trades
 4. Provide clear feedback to users about risks and outcomes
 
+
+
+
+# Injective Hackathon
+Submission for Injective AI Agent Hackathon
+
+## iAgent with Eliza Quick Start Guide
+
+### Overview
+
+The iAgent SDK is a comprehensive framework for building applications on the Injective Chain, offering:
+
+#### Rich Module Support
+- Full coverage of Injective modules (Exchange, Staking, Governance, Bank)
+- Pre-built actions for trading, staking, and governance
+
+#### Action Framework
+- Template-based system with built-in validation
+- Standardized patterns for queries and transactions
+- Automated error handling
+
+#### Integration Features
+- Native gRPC client integration
+- Multi-network support (Mainnet/Testnet)
+- Streamlined key management
+
+#### Developer Tools
+- TypeScript definitions
+- Example implementations
+- Modular action creation system
+
+This SDK enables rapid development of secure, reliable applications within Injective's DeFi ecosystem.
+
+### 🔥 What's New
+
+#### Enhanced Trading System Prompts
+We've added specialized system prompts for trading operations that provide:
+- Improved safety and risk management guidance
+- Standardized market terminology handling
+- Clear decision-making processes for financial operations
+- Comprehensive verification flows for critical transactions
+
+#### New Trading Utilities
+- `generateTradingText()` - Generate AI responses optimized for trading contexts
+- `enhanceTradingPrompt()` - Customize trading prompts with domain-specific instructions
+- Specialized trading actions with built-in safety checks
+
+#### Better Risk Management
+- Double verification for critical operations
+- Standardized market format handling
+- Detailed risk assessment in all trading operations
+- Clear execution plans with safety considerations
+
+
+### Testing the Advanced Trading System Prompts
+
+To test what we did with the advanced trading system prompts, you'll need to run the application and try out the advanced queries. Here's how to do that:
+
+#### Test with Advanced Queries
+
+Once your application is running, you can input these advanced queries to test the enhanced trading system prompts:
+
+1. **Complex Position with Risk Management:**
+```
+I'd like to open a long position on ETH/USDT with 3x leverage, using 20% of my available balance, and set a stop loss at 5% below entry
+```
+
+2. **Position Sizing with Risk Parameters:**
+```
+What position size should I use for a BTC short with 5x leverage if I'm willing to risk 2% of my $10,000 portfolio?
+```
+
+3. **Market Analysis with Strategy:**
+```
+Analyze the current ETH/USDT market conditions and suggest entry points for a long position with target profit levels
+```
+
+4. **Portfolio Allocation:**
+```
+I have $5,000 in my account. Suggest how I should allocate it between BTC, ETH, and INJ for a balanced trading portfolio
+```
+
+5. **Trade Management Decision:**
+```
+I have a long BTC position that's currently 10% in profit. Should I take profits now or set a trailing stop loss?
+```
+
+The system should now respond with enhanced trading-focused responses that include:
+* Clear risk assessments
+* Standardized market terminology
+* Step-by-step execution plans
+* Safety considerations
+* Explicit verification requirements for critical operations
+
+You should see a noticeable improvement in the quality and safety focus of the responses compared to the generic system prompt.
+
+If you encounter any issues with the implementation, make sure all the new code files are properly integrated and that the `useTradingPrompt` parameter is being set to `true` when generating responses for trading-related queries.
+
+
+
 ### Advanced Configuration
 
 #### Character Configuration
