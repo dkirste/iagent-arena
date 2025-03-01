@@ -82,6 +82,7 @@ pnpm start
 
 **Terminal 2 - Run the client:**
 ```bash
+cd iagent-ts
 pnpm start:client
 ```
 
