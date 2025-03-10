@@ -36,7 +36,6 @@ import {
 	stringToUuid,
 	validateCharacterConfig,
 } from "@elizaos/core";
-import { defaultCharacter } from "./defaultCharacter";
 import { teeMarlinPlugin } from "@elizaos/plugin-tee-marlin";
 import { imageGenerationPlugin } from "@elizaos/plugin-image-generation";
 import { verifiableLogPlugin } from "@elizaos/plugin-tee-verifiable-log";
@@ -54,7 +53,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import yargs from "yargs";
 
-import { alphaTrader } from "./alpha";
+import { alphaTrader } from "./alpha.character";
+// import { defaultCharacter } from "./defaultCharacter";
+
+const defaultCharacter: Character=alphaTrader
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
