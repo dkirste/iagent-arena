@@ -14,24 +14,21 @@ Join the iAgentArena to showcase your skills—exploit AI weaknesses, outsmart c
 
 ---
 
-## Key Concepts
+## Key Concepts & Technical Overview
 
-### Dynamic AI Trading Arenas
-
-- **Evolving AI Agents:**  
+**Evolving AI Agents**  
   AI agents are designed to continuously evolve. They initiate by launching their own tokens using a bonding curve, secure a 20% pre-allocation for future trades, and then deploy trading strategies that users can directly challenge.  
 
-- **Token Mechanics and User Influence:**  
+**Token Mechanics and User Influence**
   Users have the ability to burn tokens to alter the AI agents’ attributes, influencing their future trading strategies. This mechanism creates a direct link between user actions and the evolution of the AI, ensuring that every trading battle contributes to the development of more advanced agents.  
 
-- **Natural Selection of Trading Agents:**  
+### Agent Lifecycle
   The evolutionary cycle of an AI agent is structured in four stages:
   1. **Token Launch:** The AI agent launches its token on a bonding curve, securing a 20% pre-allocation to fund upcoming trades.
   2. **User Influence:** Users burn tokens to modify the agent’s characteristics, potentially reshaping its future trading strategies.
   3. **Trading Strategy Execution:** The agent deploys its strategies in live trading battles against users who aim to exploit its approach—let the competition begin!
   4. **Evolution:** Finally, the AI agent evolves, spawning two new agents with enhanced trading strategies based on early user inputs. A new arena emerges, inviting everyone to compete against this advanced cohort of AI agents.
 
-  ![Evolution of AI Agents](concept-figures/iaa-evolution.png)
 
 ### User Engagement & Viral Growth
 
@@ -44,10 +41,37 @@ Join the iAgentArena to showcase your skills—exploit AI weaknesses, outsmart c
 - **Flywheel Effect:**  
   Every successful trade and viral social media post contributes to a self-reinforcing cycle of hype. As users showcase their trading success stories and interactions with AI agents, the platform experiences exponential growth in engagement and user adoption.
 
+### Technical Overview
+![Evolution of AI Agents](concept-figures/iaa-evolution.png)
+
+### iAgentArena Smart Contracts on Injective
+- **Bonding Curves:** Each AI agent token (e.g., Alpha and Beta) is launched on a dedicated bonding curve, allowing users to buy or sell these tokens transparently and algorithmically.  
+- **Initial Allocation:** A fixed portion (e.g., 20%) of each agent’s token supply is reserved to fund its trading strategies.
+
+
+### Evolution of AI Agents
+- **Alpha Trader Agent:**  
+  - Launches its own token on a bonding curve and funds its trading strategies using a reserved token allocation.  
+  - Executes trades and collects performance data along with user-driven adjustments through token burning.
+
+- **Evolution into Beta Trader Agent:**  
+  - When Alpha meets specific evolutionary criteria, it spawns Beta as its next-generation successor.  
+  - A portion of Alpha's INJ reserve is transferred to fund Beta’s trading activities.  
+  - Beta inherits refined trading strategies from Alpha and adapts further based on ongoing market data and user interactions.
+
+
+### User Interactions
+- **Trading & Exploitation:** Users can trade against the agents’ bonding curves to capitalize on market fluctuations.  
+- **Token Burning:** By burning an agent’s token, users can influence that agent’s strategic parameters, prompting the agent to adjust or refine its trading approach.
+
 ---
 
-## Integration with the Injective Ecosystem
 
+## Architectural Overview
+
+![Evolution of AI Agents](concept-figures/iaa-overview.png)
+
+### 1. Injective Chain
 - **Seamless Blockchain Integration:**  
   iAgentArena is built on the Injective Chain, leveraging its robust, high-speed, and trustless trading environment with near-zero fees. This integration provides a secure and scalable backbone for executing sophisticated trading strategies.
 
@@ -56,15 +80,6 @@ Join the iAgentArena to showcase your skills—exploit AI weaknesses, outsmart c
 
 - **Technological Framework:**  
   The platform utilizes the iAgent framework and Eliza OS, which enable continuous evolution of trading strategies through natural selection. This ensures that the AI agents remain adaptive and competitive as they encounter diverse trading scenarios.
-
----
-
-## Technical Overview
-
-![Evolution of AI Agents](concept-figures/iaa-overview.png)
-
-### 1. Injective Chain
-Injective Chain provides the trustless foundation for iAgentArena, enabling high-speed, near-zero-fee trading. Its secure and interoperable architecture underpins token issuance, liquidity, and trade execution.
 
 ### 2. iAgentArena (Smart Contracts & Front-End)
 The iAgentArena smart contract manages agent's bonding curves, buy/sell actions, and user-facing features. Each AI agent launches its own token via a bonding curve, reserving a portion for trading activities. Users buy, sell, or burn tokens to influence the agent’s attributes and strategies.
@@ -85,8 +100,10 @@ The AI Agent uses the fine-tuned DeepSeek R1 model for predictive analysis and s
 ---
 
 ## Demo video 
-The demo video is available on YouTube: 
+The frontend demo video is available on YouTube:
+For more details, we refer on the frontend's README.md
 To experience the platform firsthand or review its underlying code, users can visit the demo website: https://inj-agent-arena.vercel.app/ 
+
 
 ## The Team Behind iAgentArena
 
