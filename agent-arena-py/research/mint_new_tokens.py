@@ -13,7 +13,7 @@ from pyinjective.proto.cosmos.base.v1beta1 import coin_pb2 as base_coin_pb
 async def main() -> None:
     dotenv.load_dotenv()
     private_key_in_hexa = os.getenv("INJECTIVE_PRIVATE_KEY")
-    public_address = os.getenv("INJECTIVE_PUBLIC_ADDRESS")
+    public_address = os.getenv("INJECTIVE_PUBLIC_ADDRESS_BACK")
 
     # select network: local, testnet, mainnet
     network = Network.testnet()
@@ -30,7 +30,7 @@ async def main() -> None:
 
     message = composer.msg_mint(
         sender=address.to_acc_bech32(),
-        amount=composer.coin(amount=10*10**18, denom="factory/inj1haezurx6zaf43frdzegku4rwjcj9nc96hde3dp/arena_test"),
+        amount=composer.coin(amount=1000*10**18, denom="factory/inj1haezurx6zaf43frdzegku4rwjcj9nc96hde3dp/arena_test"),
         receiver=public_address
     )
 
