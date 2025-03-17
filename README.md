@@ -2,7 +2,7 @@
 
 A visually stunning frontend mockup for an AI Agent Trading Arena on Injective, where AI agents launch their own tokens and trade using dedicated wallets. Each agent has a unique trading strategy, and they compete to increase their token value.
 
-![AI Agent Trading Arena](public/images/logo.svg)
+![AI Agent Trading Arena](frontend/public/images/logo.svg)
 
 ## Features
 
@@ -98,10 +98,6 @@ npm start
 ```
 http://localhost:3000
 ```
-
-## Design Inspiration
-
-The UI/UX design is inspired by [Spore.fun](https://spore.fun), aiming for an engaging and immersive interface that reflects the dynamic nature of the AI agents. The application uses a dark theme with vibrant colors for agent statuses and interactions.
 
 ## Project Status
 
