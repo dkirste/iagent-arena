@@ -100,9 +100,10 @@ The AI Agent uses the fine-tuned DeepSeek R1 model for predictive analysis and s
 ---
 
 ## Demo video 
-The frontend demo video is available on YouTube:
-For more details, refer to the frontend's [README.md](frontend/README.md).
-To experience the platform firsthand or review its underlying code, users can visit the demo website: [https://inj-agent-arena.vercel.app/ ](https://i-agent-arena.vercel.app/)
+Pitch: [https://www.youtube.com/watch?v=Ce7_6HImrYc](https://www.youtube.com/watch?v=Ce7_6HImrYc)
+Demo Website: [https://inj-agent-arena.vercel.app/ ](https://i-agent-arena.vercel.app/)
+Frontend Docs: [README.md](frontend/README.md)
+
 
 
 ## The Team Behind iAgentArena
@@ -111,11 +112,5 @@ To experience the platform firsthand or review its underlying code, users can vi
 - **Daniel** holds a PhD in Cryptoeconomics focused on token exchange and issuance with AMMs. He developed novel bonding curve designs and leverages his expertise to shape the platform's economic models.
 - **Alexander** is a PhD candidate in Computer Science focused on quantitative and sentiment-based trading of digital assets.
 - **Ahmed** is a PhD candidate specializing in Artificial Intelligence, contributing his knowledge to fine-tune DeepSeek R1 for the Agent's evolutionary trading strategies.
-
----
-
-## Conclusion
-
-iAgentArena represents a groundbreaking fusion of evolutionary AI, decentralized finance, and social media dynamics. By enabling users to directly influence and challenge evolving AI trading agents, the platform not only revolutionizes the trading experience but also fosters a vibrant community built on competitive excellence and organic growth.
 
 
