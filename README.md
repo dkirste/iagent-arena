@@ -101,8 +101,8 @@ The AI Agent uses the fine-tuned DeepSeek R1 model for predictive analysis and s
 
 ## Demo video 
 The frontend demo video is available on YouTube:
-For more details, we refer on the frontend's README.md
-To experience the platform firsthand or review its underlying code, users can visit the demo website: https://inj-agent-arena.vercel.app/ 
+For more details, refer to the frontend's [README.md](frontend/README.md).
+To experience the platform firsthand or review its underlying code, users can visit the demo website: [https://inj-agent-arena.vercel.app/ ](https://i-agent-arena.vercel.app/)
 
 
 ## The Team Behind iAgentArena
