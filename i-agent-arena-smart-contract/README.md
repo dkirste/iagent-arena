@@ -14,32 +14,42 @@ docker run --rm -v "$(pwd)":/code \
 ### 2. Create the Injective Docker Container
 ```
 docker run --name="injective-core-staging" \
--v=<directory_to_which_you_cloned_cw-template>/artifacts:/var/artifacts \
+-v=$(pwd)/artifacts:/var/artifacts \
 --entrypoint=sh public.ecr.aws/l9h3g6c6/injective-core:staging \
 -c "tail -F anything"
 ```
 
-### 3. Upload the WASM Smart Contract to Testnet
+### 3. Get a Bash Shell in the Container
 ```
-yes 12345678 | injectived tx wasm store artifacts/my_first_contract.wasm \
+docker exec -it injective-core-staging sh
+apk add jq
+injectived keys add iagentarena
+
+INJ_ADDRESS=inj154l429ac75spgac6qqdyxs0dtthy25l25r6q9q
+cd /var
+```
+
+### 4. Upload the WASM Smart Contract to Testnet
+```
+yes 12345678 | injectived tx wasm store artifacts/cw20_bonding.wasm \
 --from=$(echo $INJ_ADDRESS) \
 --chain-id="injective-888" \
---yes --fees=1000000000000000inj --gas=2000000 \
+--yes --fees=10000000000000000inj --gas=20000000 \
 --node=https://testnet.sentry.tm.injective.network:443
 ```
 
-### 4. Instantiate the Smart Contract
+### 5. Instantiate the Smart Contract
 Replace <code_id of your stored contract> with the actual code id returned from the previous step.
 ```
 CODE_ID=<code_id of your stored contract>
-INIT='{"count":99}'
+INIT='{"name":"ALPHA","symbol":"ALPHA","decimals":6,"reserve_denom":"inj","reserve_decimals":6,"curve_type":{"linear":{"slope":"1","scale":1}}}'
 
 yes 12345678 | injectived tx wasm instantiate $CODE_ID $INIT \
---label="CounterTestInstance" \
+--label="iAgentArenaTest" \
 --from=$(echo $INJ_ADDRESS) \
 --chain-id="injective-888" \
---yes --fees=1000000000000000inj \
---gas=2000000 \
+--yes --fees=10000000000000000inj \
+--gas=20000000 \
 --no-admin \
 --node=https://testnet.sentry.tm.injective.network:443
 ```
