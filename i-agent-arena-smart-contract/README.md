@@ -53,3 +53,49 @@ yes 12345678 | injectived tx wasm instantiate $CODE_ID $INIT \
 --no-admin \
 --node=https://testnet.sentry.tm.injective.network:443
 ```
+
+
+## Interacting with the smart contract
+
+### 1. Query Balance 
+```
+CONTRACT_ADDRESS=inj12g9jfpjmd3xk2k3zel3hky75lve3w82u5hp5rq
+
+injectived q wasm contract-state smart $(echo $CONTRACT_ADDRESS) \
+'{"balance": {"address": "inj154l429ac75spgac6qqdyxs0dtthy25l25r6q9q"}}' \
+--node=https://testnet.sentry.tm.injective.network:443 \
+--output json
+```
+
+### 2. Query Curve Info
+```
+injectived q wasm contract-state smart $(echo $CONTRACT_ADDRESS) \
+'{"curve_info": {}}' \
+--node=https://testnet.sentry.tm.injective.network:443 \
+--output json
+```
+
+
+### 3. Buy Tokens 
+```
+injectived tx wasm execute $(echo $CONTRACT_ADDRESS) \
+'{"buy": {}}' \
+--from=$(echo $INJ_ADDRESS) \
+--chain-id="injective-888" \
+--amount="1000000000000000000inj" \
+--yes --fees=10000000000000000inj --gas=20000000 \
+--node=https://testnet.sentry.tm.injective.network:443
+```
+
+### 4. Sell Tokens 
+```
+injectived tx wasm execute $(echo $CONTRACT_ADDRESS) \
+'{"burn": {"amount": "10"}}' \
+--from=$(echo $INJ_ADDRESS) \
+--chain-id="injective-888" \
+--yes --fees=10000000000000000inj --gas=20000000 \
+--node=https://testnet.sentry.tm.injective.network:443
+```
+
+
+
