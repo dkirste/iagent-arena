@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard';
 import AgentProfile from './components/AgentProfile';
 import FamilyTree from './components/FamilyTree';
 import AgentBreeding from './components/AgentBreeding';
+import AgentMVP from './components/AgentMVP';
 
 // Styles
 import GlobalStyle from './styles/GlobalStyle';
@@ -101,6 +102,7 @@ function App() {
               <Route path="/agent/:id" element={<AgentProfile selectedAgent={selectedAgent} />} />
               <Route path="/family-tree" element={<FamilyTree setSelectedAgent={setSelectedAgent} />} />
               <Route path="/breeding" element={<AgentBreeding />} />
+              <Route path="/agents" element={<AgentMVP />} />
               <Route path="*" element={<BasicContent />} />
             </Routes>
           </div>
