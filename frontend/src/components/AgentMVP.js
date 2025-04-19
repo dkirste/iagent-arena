@@ -109,10 +109,10 @@ const AmountButton = styled.button`
 
 const alphaAgent = agents.find(agent => agent.name === 'AlphaAgent');
 
-const AgentMVP = () => {
+const AgentMVP = ({ walletConnected, walletAddress }) => {
   const [tokenType, setTokenType] = useState('INJ');
   const [amount, setAmount] = useState('');
-  const [walletConnected, setWalletConnected] = useState(false);
+  // Remove local walletConnected state
 
   const handleTransaction = async (type) => {
     if (!walletConnected) {
@@ -122,41 +122,49 @@ const AgentMVP = () => {
 
     try {
       const chainId = 'injective-888';
+      const contractAddress = '<CONTRACT_ADDRESS>'; // TODO: Replace with actual contract address
+      const rpcEndpoint = 'https://testnet.sentry.tm.injective.network:443';
+      const amountInAttoInj = '1000000000000000000'; // 1 INJ in attoinj
+      const feeAmount = '10000000000000000'; // 0.01 INJ in attoinj
+      const gas = '20000000';
+
       await window.keplr.enable(chainId);
       const offlineSigner = window.getOfflineSigner(chainId);
       const accounts = await offlineSigner.getAccounts();
+      const sender = accounts[0].address;
 
-      const transaction = {
-        msgs: [
-          {
-            type: 'wasm/MsgExecuteContract',
-            value: {
-              sender: accounts[0].address,
-              contract: '<CONTRACT_ADDRESS>', // Replace with actual contract address
-              msg: { [type]: {} },
-              funds: [
-                {
-                  denom: tokenType.toLowerCase(),
-                  amount: (parseFloat(amount) * 1e18).toString(),
-                },
-              ],
-            },
-          },
-        ],
-        fee: {
+      // Use CosmJS to sign and broadcast the transaction
+      const { SigningCosmWasmClient } = await import('cosmwasm');
+      const client = await SigningCosmWasmClient.connectWithSigner(
+        rpcEndpoint,
+        offlineSigner
+      );
+
+      const msg = { buy: {} };
+      const result = await client.execute(
+        sender,
+        contractAddress,
+        msg,
+        {
           amount: [
             {
               denom: 'inj',
-              amount: '10000000000000000',
+              amount: feeAmount,
             },
           ],
-          gas: '20000000',
+          gas: gas,
         },
-        chain_id: chainId,
-      };
+        undefined,
+        [
+          {
+            denom: 'inj',
+            amount: amountInAttoInj,
+          },
+        ]
+      );
 
-      console.log('Transaction:', transaction);
-      alert(`${type.toUpperCase()} transaction submitted!`);
+      console.log('Transaction result:', result);
+      alert('Transaction submitted! TxHash: ' + result.transactionHash);
     } catch (error) {
       console.error('Transaction failed:', error);
       alert('Transaction failed. Please try again.');
@@ -176,7 +184,7 @@ const AgentMVP = () => {
       <TradingPanel>
         <ButtonGroup>
           <Button type="buy" onClick={() => setTokenType('INJ')}>
-            Buy INJ
+            Buy ALPHA
           </Button>
           <Button type="sell" onClick={() => setTokenType('ALPHA')}>
             Sell ALPHA

@@ -222,25 +222,32 @@ const WalletModal = styled(motion.div)`
   }
 `;
 
-const Navbar = () => {
+const Navbar = ({ walletConnected: globalWalletConnected, walletAddress: globalWalletAddress, onWalletConnect, onWalletDisconnect }) => {
   const location = useLocation();
   const [walletModalOpen, setWalletModalOpen] = useState(false);
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState('');
-  
+  const [walletConnected, setWalletConnected] = useState(globalWalletConnected || false);
+  const [walletAddress, setWalletAddress] = useState(globalWalletAddress || '');
+
+  // Sync local state with global state
+  useEffect(() => {
+    setWalletConnected(globalWalletConnected);
+    setWalletAddress(globalWalletAddress);
+  }, [globalWalletConnected, globalWalletAddress]);
+
   const connectWallet = (walletType) => {
-    // Simulate wallet connection
     setTimeout(() => {
       const mockAddress = '0x' + Array(40).fill().map(() => Math.floor(Math.random() * 16).toString(16)).join('');
       setWalletAddress(mockAddress);
       setWalletConnected(true);
       setWalletModalOpen(false);
+      if (onWalletConnect) onWalletConnect(mockAddress);
     }, 1000);
   };
-  
+
   const disconnectWallet = () => {
     setWalletAddress('');
     setWalletConnected(false);
+    if (onWalletDisconnect) onWalletDisconnect();
   };
 
   const connectKeplrWallet = async () => {
@@ -248,21 +255,16 @@ const Navbar = () => {
       alert('Please install the Keplr extension to connect your wallet.');
       return;
     }
-  
     try {
-      // Enable Keplr for a specific chain (e.g., Cosmos Hub)
       const chainId = 'injective-888';
       await window.keplr.enable(chainId);
-  
-      // Get the offline signer and accounts
       const offlineSigner = window.getOfflineSigner(chainId);
       const accounts = await offlineSigner.getAccounts();
-  
-      // Set the wallet address and mark as connected
       const walletAddress = accounts[0].address;
       setWalletAddress(walletAddress);
       setWalletConnected(true);
       setWalletModalOpen(false);
+      if (onWalletConnect) onWalletConnect(walletAddress);
     } catch (error) {
       console.error('Failed to connect Keplr wallet:', error);
       alert('Failed to connect Keplr wallet. Please try again.');

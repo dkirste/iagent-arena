@@ -46,7 +46,20 @@ const BasicContent = () => (
 function App() {
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+  // Global wallet state
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [walletAddress, setWalletAddress] = useState('');
+
+  // Pass these handlers to Navbar and AgentMVP
+  const handleWalletConnect = (address) => {
+    setWalletConnected(true);
+    setWalletAddress(address);
+  };
+  const handleWalletDisconnect = () => {
+    setWalletConnected(false);
+    setWalletAddress('');
+  };
+
   // Simulate loading to ensure all components are properly initialized
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -95,14 +108,19 @@ function App() {
         <GlobalStyle />
         <Router>
           <div className="app-container">
-            <Navbar />
+            <Navbar 
+              walletConnected={walletConnected}
+              walletAddress={walletAddress}
+              onWalletConnect={handleWalletConnect}
+              onWalletDisconnect={handleWalletDisconnect}
+            />
             <GlobalStats />
             <Routes>
               <Route path="/" element={<Dashboard setSelectedAgent={setSelectedAgent} />} />
               <Route path="/agent/:id" element={<AgentProfile selectedAgent={selectedAgent} />} />
               <Route path="/family-tree" element={<FamilyTree setSelectedAgent={setSelectedAgent} />} />
               <Route path="/breeding" element={<AgentBreeding />} />
-              <Route path="/agents" element={<AgentMVP />} />
+              <Route path="/agents" element={<AgentMVP walletConnected={walletConnected} walletAddress={walletAddress} />} />
               <Route path="*" element={<BasicContent />} />
             </Routes>
           </div>
