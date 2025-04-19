@@ -251,7 +251,7 @@ const Navbar = () => {
   
     try {
       // Enable Keplr for a specific chain (e.g., Cosmos Hub)
-      const chainId = 'cosmoshub-4';
+      const chainId = 'injective-888';
       await window.keplr.enable(chainId);
   
       // Get the offline signer and accounts
