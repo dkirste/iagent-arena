@@ -9,6 +9,10 @@ import Dashboard from './components/Dashboard';
 import AgentProfile from './components/AgentProfile';
 import FamilyTree from './components/FamilyTree';
 import AgentBreeding from './components/AgentBreeding';
+import AgentTokenTrading from './components/AgentTokenTrading';
+
+// Wallet Context
+import { WalletProvider } from './context/WalletContext';
 
 // Styles
 import GlobalStyle from './styles/GlobalStyle';
@@ -92,19 +96,24 @@ function App() {
     return (
       <ThemeProvider theme={darkTheme}>
         <GlobalStyle />
-        <Router>
-          <div className="app-container">
-            <Navbar />
-            <GlobalStats />
-            <Routes>
-              <Route path="/" element={<Dashboard setSelectedAgent={setSelectedAgent} />} />
-              <Route path="/agent/:id" element={<AgentProfile selectedAgent={selectedAgent} />} />
-              <Route path="/family-tree" element={<FamilyTree setSelectedAgent={setSelectedAgent} />} />
-              <Route path="/breeding" element={<AgentBreeding />} />
-              <Route path="*" element={<BasicContent />} />
-            </Routes>
-          </div>
-        </Router>
+        <WalletProvider>
+          <Router>
+            <div className="app-container">
+              <Navbar />
+              <GlobalStats />
+              <div style={{ padding: '0 2rem' }}>
+                <AgentTokenTrading />
+              </div>
+              <Routes>
+                <Route path="/" element={<Dashboard setSelectedAgent={setSelectedAgent} />} />
+                <Route path="/agent/:id" element={<AgentProfile selectedAgent={selectedAgent} />} />
+                <Route path="/family-tree" element={<FamilyTree setSelectedAgent={setSelectedAgent} />} />
+                <Route path="/breeding" element={<AgentBreeding />} />
+                <Route path="*" element={<BasicContent />} />
+              </Routes>
+            </div>
+          </Router>
+        </WalletProvider>
       </ThemeProvider>
     );
   } catch (error) {

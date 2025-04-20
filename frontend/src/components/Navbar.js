@@ -7,6 +7,9 @@ import { FaHome, FaChartLine, FaRobot, FaNetworkWired, FaDna, FaCog, FaChartBar,
 // Import mock data
 import { globalStats } from '../utils/mockData';
 
+// Import wallet connector
+import WalletConnector from './WalletConnector';
+
 const NavbarContainer = styled.nav`
   display: flex;
   justify-content: space-between;
@@ -227,7 +230,7 @@ const Navbar = () => {
   const [walletModalOpen, setWalletModalOpen] = useState(false);
   const [walletConnected, setWalletConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
-  
+
   const connectWallet = (walletType) => {
     // Simulate wallet connection
     setTimeout(() => {
@@ -237,7 +240,7 @@ const Navbar = () => {
       setWalletModalOpen(false);
     }, 1000);
   };
-  
+
   const disconnectWallet = () => {
     setWalletAddress('');
     setWalletConnected(false);
@@ -248,16 +251,16 @@ const Navbar = () => {
       alert('Please install the Keplr extension to connect your wallet.');
       return;
     }
-  
+
     try {
       // Enable Keplr for a specific chain (e.g., Cosmos Hub)
       const chainId = 'injective-888';
       await window.keplr.enable(chainId);
-  
+
       // Get the offline signer and accounts
       const offlineSigner = window.getOfflineSigner(chainId);
       const accounts = await offlineSigner.getAccounts();
-  
+
       // Set the wallet address and mark as connected
       const walletAddress = accounts[0].address;
       setWalletAddress(walletAddress);
@@ -319,46 +322,7 @@ const Navbar = () => {
             </StatItem>
           </StatsContainer>
           
-          <WalletButton 
-            connected={walletConnected}
-            onClick={() => walletConnected ? disconnectWallet() : setWalletModalOpen(!walletModalOpen)}
-          >
-            <FaWallet />
-            {walletConnected ? (
-              <span className="address">{walletAddress.substring(0, 6)}...{walletAddress.substring(walletAddress.length - 4)}</span>
-            ) : (
-              "Connect Wallet"
-            )}
-          </WalletButton>
-          
-          {walletModalOpen && !walletConnected && (
-            <WalletModal
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
-            >
-              <h3>Connect Wallet</h3>
-              <div className="wallet-options">
-                <div className="wallet-option" onClick={() => connectWallet('metamask')}>
-                  <img src="/images/metamask.png" alt="MetaMask" />
-                  <span className="name">MetaMask</span>
-                </div>
-                <div className="wallet-option" onClick={connectKeplrWallet}>
-                  <img src="/images/keplr.png" alt="Keplr" />
-                  <span className="name">Keplr</span>
-                </div>
-                <div className="wallet-option" onClick={() => connectWallet('leap')}>
-                  <img src="/images/leap.png" alt="Leap" />
-                  <span className="name">Leap</span>
-                </div>
-                <div className="wallet-option" onClick={() => connectWallet('cosmostation')}>
-                  <img src="/images/cosmostation.png" alt="Cosmostation" />
-                  <span className="name">Cosmostation</span>
-                </div>
-              </div>
-            </WalletModal>
-          )}
+          <WalletConnector />
           
           <SettingsButton>
             <FaCog />
