@@ -1,6 +1,23 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { agents } from '../utils/mockData';
+import {
+  TxRaw,
+  MsgSend,
+  BaseAccount,
+  TxRestClient,
+  ChainRestAuthApi,
+  createTransaction,
+  CosmosTxV1Beta1Tx,
+  BroadcastModeKeplr,
+  ChainRestTendermintApi,
+  getTxRawFromTxRawOrDirectSignResponse,
+} from "@injectivelabs/sdk-ts";
+import { getStdFee, DEFAULT_BLOCK_TIMEOUT_HEIGHT } from "@injectivelabs/utils";
+import { ChainId } from "@injectivelabs/ts-types";
+import { BigNumberInBase } from "@injectivelabs/utils";
+import { TransactionException } from "@injectivelabs/exceptions";
+import { SignDoc } from "@keplr-wallet/types";
 
 const AgentMVPContainer = styled.div`
   display: flex;
@@ -109,62 +126,69 @@ const AmountButton = styled.button`
 
 const alphaAgent = agents.find(agent => agent.name === 'AlphaAgent');
 
+const getKeplr = async (chainId) => {
+  await window.keplr.enable(chainId);
+
+  const offlineSigner = window.keplr.getOfflineSigner(chainId);
+  const accounts = await offlineSigner.getAccounts();
+  const key = await window.keplr.getKey(chainId);
+
+  return { offlineSigner, accounts, key, sendTx: window.keplr.sendTx };
+};
+
+const broadcastTx = async (chainId, txRaw) => {
+  const keplr = await getKeplr(chainId);
+  const result = await keplr.sendTx(
+    chainId,
+    CosmosTxV1Beta1Tx.TxRaw.encode(txRaw).finish(),
+    BroadcastModeKeplr.Sync
+  );
+
+  if (!result || result.length === 0) {
+    throw new TransactionException(
+      new Error("Transaction failed to be broadcasted"),
+      { contextModule: "Keplr" }
+    );
+  }
+};
+
 const AgentMVP = ({ walletConnected, walletAddress }) => {
   const [tokenType, setTokenType] = useState('INJ');
   const [amount, setAmount] = useState('');
-  // Remove local walletConnected state
 
   const handleTransaction = async (type) => {
     if (!walletConnected) {
       alert('Please connect your wallet to proceed.');
       return;
     }
-
     try {
+      const contractAddress = 'inj12g9jfpjmd3xk2k3zel3hky75lve3w82u5hp5rq'; // TODO: Replace with actual contract address
       const chainId = 'injective-888';
-      const contractAddress = '<CONTRACT_ADDRESS>'; // TODO: Replace with actual contract address
-      const rpcEndpoint = 'https://testnet.sentry.tm.injective.network:443';
-      const amountInAttoInj = '1000000000000000000'; // 1 INJ in attoinj
       const feeAmount = '10000000000000000'; // 0.01 INJ in attoinj
-      const gas = '20000000';
+      const gas = 20000000;
+      const amountInAttoInj = '1000000000000000000'; // 1 INJ in attoinj
 
-      await window.keplr.enable(chainId);
-      const offlineSigner = window.getOfflineSigner(chainId);
-      const accounts = await offlineSigner.getAccounts();
-      const sender = accounts[0].address;
+      // Connect Keplr wallet
+      const keplrWallet = await getKeplr(chainId); // Fixed: await getKeplr
+      const injAddress = keplrWallet.accounts[0].address; // Fixed: get address from accounts
 
-      // Use CosmJS to sign and broadcast the transaction
-      const { SigningCosmWasmClient } = await import('cosmwasm');
-      const client = await SigningCosmWasmClient.connectWithSigner(
-        rpcEndpoint,
-        offlineSigner
-      );
-
-      const msg = { buy: {} };
-      const result = await client.execute(
-        sender,
-        contractAddress,
-        msg,
-        {
-          amount: [
-            {
-              denom: 'inj',
-              amount: feeAmount,
-            },
-          ],
-          gas: gas,
-        },
-        undefined,
-        [
+      // Prepare message
+      const msg = {
+        sender: injAddress,
+        contractAddress: contractAddress,
+        msg: { buy: {} },
+        funds: [
           {
             denom: 'inj',
             amount: amountInAttoInj,
           },
-        ]
-      );
+        ],
+      };
 
+      // Broadcast transaction
+      const result = await broadcastTx(chainId, msg)
+      
       console.log('Transaction result:', result);
-      alert('Transaction submitted! TxHash: ' + result.transactionHash);
     } catch (error) {
       console.error('Transaction failed:', error);
       alert('Transaction failed. Please try again.');
