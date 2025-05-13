@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
@@ -242,7 +242,33 @@ const Navbar = () => {
     setWalletAddress('');
     setWalletConnected(false);
   };
+
+  const connectKeplrWallet = async () => {
+    if (!window.keplr) {
+      alert('Please install the Keplr extension to connect your wallet.');
+      return;
+    }
   
+    try {
+      // Enable Keplr for a specific chain (e.g., Cosmos Hub)
+      const chainId = 'injective-888';
+      await window.keplr.enable(chainId);
+  
+      // Get the offline signer and accounts
+      const offlineSigner = window.getOfflineSigner(chainId);
+      const accounts = await offlineSigner.getAccounts();
+  
+      // Set the wallet address and mark as connected
+      const walletAddress = accounts[0].address;
+      setWalletAddress(walletAddress);
+      setWalletConnected(true);
+      setWalletModalOpen(false);
+    } catch (error) {
+      console.error('Failed to connect Keplr wallet:', error);
+      alert('Failed to connect Keplr wallet. Please try again.');
+    }
+  };
+
   try {
     // Safely access mock data
     const stats = globalStats || {
@@ -315,19 +341,19 @@ const Navbar = () => {
               <h3>Connect Wallet</h3>
               <div className="wallet-options">
                 <div className="wallet-option" onClick={() => connectWallet('metamask')}>
-                  <img src="https://metamask.io/images/metamask-fox.svg" alt="MetaMask" />
+                  <img src="/images/metamask.png" alt="MetaMask" />
                   <span className="name">MetaMask</span>
                 </div>
-                <div className="wallet-option" onClick={() => connectWallet('keplr')}>
-                  <img src="https://assets.website-files.com/63eb7ddf41cf5b1c8fdfbc74/63edd5d1a40b9a48841ac1d5_Keplr%20Logo.svg" alt="Keplr" />
+                <div className="wallet-option" onClick={connectKeplrWallet}>
+                  <img src="/images/keplr.png" alt="Keplr" />
                   <span className="name">Keplr</span>
                 </div>
                 <div className="wallet-option" onClick={() => connectWallet('leap')}>
-                  <img src="https://miro.medium.com/v2/resize:fit:1400/1*1y3UxUWAKKvC5yrJnwQQsA.png" alt="Leap" />
+                  <img src="/images/leap.png" alt="Leap" />
                   <span className="name">Leap</span>
                 </div>
                 <div className="wallet-option" onClick={() => connectWallet('cosmostation')}>
-                  <img src="https://cosmostation.io/assets/images/logo.png" alt="Cosmostation" />
+                  <img src="/images/cosmostation.png" alt="Cosmostation" />
                   <span className="name">Cosmostation</span>
                 </div>
               </div>
